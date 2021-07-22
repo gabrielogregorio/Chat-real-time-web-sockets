@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style.css">
+  <title>Document</title>
+</head>
+<body>
+
+  <section class="titulo-chat">
+    <h1>Chat</h1>
+    <img src="icon.png" alt="Logo do aplicativo">
+  </section>
+
+  <section class="superior-bar">
+    <div class="container">
+    </div>
+  </section>
+ 
+
+  <section class="box-messages">
+    <div class="container" id="messages">
+
+    </div>
+  </section>
+
+  <section class="box-send-message">
+    <div class="container">
+      <form id="form" action="">
+        <input id="input" autocomplete="off" />
+        <button>Send</button>
+      </form>  
+    </div>
+  </section>
+
+
+
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+    let name = prompt('Qual é o seu nome?');
+
+    socket.emit('new user', name);
+
+    socket.on('new user', (data) => {
+      if (data.success) {
+
+      } else {
+        alert('Já tem alguém com esse nome')
+        window.location.href = "/";
+      }
+    })
+
+    var messages = document.getElementById('messages');
+    var form = document.getElementById('form');
+    var input = document.getElementById('input');
+
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (input.value) {
+        socket.emit('chat message', {msg:input.value, name:name})
+        input.value = '';
+      }
+    })
+
+
+    socket.on('chat message', (obj) => {
+      if(obj.name == name) {
+        var item1 = document.createElement('div');
+        var item2 = document.createElement('div');
+
+        item1.classList = 'message';
+        item2.classList = 'message-item';
+
+        item2.textContent = obj.msg;
+
+        item1.appendChild(item2)
+        messages.appendChild(item1);
+      } else {
+        var item1 = document.createElement('div');
+        var img2 = document.createElement('img');
+        var item3 = document.createElement('div');
+        var item4 = document.createElement('h2');
+        var item5 = document.createElement('div');
+  
+        item1.classList = 'message-outro';
+        img2.src = obj.img;
+        item3.classList = 'message-outro-flex';
+        item4.textContent = obj.name;
+        item5.classList = "message-item-outro";
+        item5.textContent = obj.msg;
+
+        item1.appendChild(img2);
+        item1.appendChild(item3);
+        item3.append(item4);
+        item3.append(item5);
+        messages.appendChild(item1);
+      }
+
+      var scrollMessage = document.getElementById('messages');
+      scrollMessage.scrollTo(0, scrollMessage.scrollHeight);
+    })
+  </script>
+
+</body>
+</html>
