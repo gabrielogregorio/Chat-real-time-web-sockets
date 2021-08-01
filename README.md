@@ -22,7 +22,12 @@
 
 
 
-### Como Iniciar           
-Este projeto se trata de um "hello world" em websockets, onde através de javascript conseguimos conectar um servidor a vários clientes que podem interagir entre si.
+### Introdução        
+Este projeto se trata de um "hello world" em websockets, onde através de Javascript conseguimos conectar um servidor a vários clientes que podem interagir entre si.
+
+
+### Como iniciar    
+1. "npm install" na pasta raiz  
+3. Depois é só rodar um "node index.js"
 
 ![Projeto em funcionamento](websockets.png)
